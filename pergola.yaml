@@ -5,9 +5,6 @@ components:
       image: mysql:8.3
     ports:
       - 3306
-    command:
-      - --default-storage-engine
-      - innodb
     env:
       - name: MYSQL_DATABASE
         value: kimai
