@@ -30,8 +30,6 @@ components:
     env:
       - name: APP_SECRET
         value: 1mT2P+bb392nLZ/SJ4IyCi3LYRUWxNoMeukga+lYOII=
-      - name: TRUSTED_HOSTS
-        value: kimai.example.com
       - name: ADMINMAIL
         value: admin@example.com
       - name: ADMINPASS
