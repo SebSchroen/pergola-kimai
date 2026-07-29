@@ -1,0 +1,52 @@
+version: v1
+components:
+  - name: sqldb
+    docker:
+      image: mysql:8.3
+    ports:
+      - 3306
+    command:
+      - --default-storage-engine
+      - innodb
+    env:
+      - name: MYSQL_DATABASE
+        value: kimai
+      - name: MYSQL_USER
+        value: kimaiuser
+      - name: MYSQL_PASSWORD
+        value: kimaipassword
+      - name: MYSQL_ROOT_PASSWORD
+        value: changemeplease
+    storage:
+      - name: mysql
+        path: /var/lib/mysql
+        size: 10Gi
+
+  - name: kimai
+    docker:
+      image: kimai/kimai2:stable
+    ports:
+      - 8001
+    ingresses:
+      - host: kimai
+        port: 8001
+    env:
+      - name: APP_SECRET
+        value: 1mT2P+bb392nLZ/SJ4IyCi3LYRUWxNoMeukga+lYOII=
+      - name: TRUSTED_HOSTS
+        value: kimai.example.com
+      - name: ADMINMAIL
+        value: admin@example.com
+      - name: ADMINPASS
+        value: changemeplease
+      - name: DATABASE_HOST
+        component-ref: sqldb
+      - name: DATABASE_URL
+        value: mysql://kimaiuser:kimaipassword@$(DATABASE_HOST)/kimai?charset=utf8mb4&serverVersion=8.3.0
+    storage:
+      - name: data
+        path: /opt/kimai/var/data
+        size: 5Gi
+      - name: plugins
+        path: /opt/kimai/var/plugins
+        size: 2Gi
